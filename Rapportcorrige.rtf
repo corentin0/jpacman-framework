@@ -1,0 +1,370 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural
+
+\f0\fs24 \cf0 \\documentclass[a4paper,12pt]\{report\} % Format du papier, type de document\
+ \
+\\usepackage[utf8]\{inputenc\} % Permet de tapper les accents tels quels\
+\\usepackage[T1]\{fontenc\} % Permet l'utilisation d'accents\
+\\usepackage[french]\{babel\} % Dit que le document est en fran\'e7ais\
+\\usepackage\{amsfonts\} % Diff\'e9rents packages... Lire la doc....\
+\\usepackage\{amsmath\}\
+\\usepackage\{listings\}\
+\\usepackage\{color\}\
+\\usepackage\{graphicx\} %affichage d'image\
+\\usepackage\{moreverb\}\
+\\usepackage[colorlinks=true,linkcolor=blue]\{hyperref\} %lien hypertexte\
+\\usepackage[all]\{hypcap\}\
+\\usepackage\{fullpage\}\
+\\usepackage\{fancyhdr\}\
+\\pagestyle\{fancy\}\
+\\renewcommand\{\\thesection\}\{\\arabic\{section\}\}\
+\\setcounter\{tocdepth\}\{5\}\
+\\setcounter\{secnumdepth\}\{5\}\
+\
+\\renewcommand\{\\headrulewidth\}\{0pt\} \
+\\fancyhead\{\} %retire en tete\
+\
+\\renewcommand\{\\footrulewidth\}\{1pt\} %bas de page\
+\\fancyfoot[C]\{\\textbf\{\\thepage\}\} \
+\\fancyfoot[L]\{Software evolution\}\
+\\fancyfoot[R]\{Jpacman framework\}\
+\
+\\title\{Software evolution \\\\ JPacman framework\}\
+\\author\{Ducruet Corentin \\\\ Gallois Florent \\\\ Ledru Santorin\}\
+\\date\{Ann\'e9e acad\'e9mique\\\\2015 - 2016\}\
+%\\begin\{figure\}[!h] %on ouvre l'environnement figure\
+%		\\centering\
+%		\\includegraphics[width=108mm,height=65mm]\{impulsion.png\}\
+%	\\end\{figure\} \
+\
+%\\begin\{figure\}%[H] si on veut que l image soit a cet endroit\
+%	\\centering\
+%	\\includegraphics[width=108mm,height=65mm]\{./scr/logo\}\
+%	\\caption\{Ic\'f4ne\}\
+%	\\label\{fig:Ic\'f4ne\}\
+%\\end\{figure\}\
+\
+\\begin\{document\} \
+\\maketitle\
+\\newpage \
+\\addtocontents\{toc\}\{\\protect\\thispagestyle\{fancy\}\} %modifie mise en page table des matiere\
+\\tableofcontents\
+\\newpage\
+%\\raggedright\
+\\section\{Introduction\}\
+Dans le cadre du cours de Softare Evolution, l'occasion nous est donn\'e9e de mettre en pratique les concepts d'\'e9volution logicielle vus en cours. Le projet qui nous est confi\'e9 consiste \'e0 r\'e9cup\'e9rer un projet de Pac-Man et d'y impl\'e9menter plusieurs fonctionnalit\'e9s. Ces m\'eames fonctionnalit\'e9s doivent \'eatre r\'e9alis\'e9es en suivant un processus de d\'e9veloppement dirig\'e9 par les tests. Apr\'e8s la r\'e9alisation de ces t\'e2ches, il nous est demand\'e9 de rassembler ces diff\'e9rents travaux dans le logiciel. Enfin, une analyse de la qualit\'e9 ainsi qu'une am\'e9lioration du code doit nous permettre de terminer le logiciel.\
+\
+Dans un premier temps, nous \'e9tudions chaque t\'e2che individuelle par la r\'e9alisation de la "Supergomme", ensuite, la s\'e9rie de labyrinthe et enfin, l'impl\'e9mentation de l'IA des fant\'f4mes.\
+\
+Dans un deuxi\'e8me temps, nous exposons les difficult\'e9s rencontr\'e9es lors de la fusion des trois fonctionnalit\'e9s. En dernier lieu, l'analyse du code et des am\'e9liorations sont abord\'e9es.\
+\
+\
+\\section\{Supergomme - Ducruet Corentin\}\
+\\subsection\{Programme initial et objectifs\}\
+La version initiale du framework Jpacman ne contenait qu'un seul type de gomme qui avait pour effet d'augmenter notre score de 10 points. Il nous a \'e9t\'e9 demand\'e9 d'ajouter la fonctionnalit\'e9 "Supergomme". Cette fonctionnalit\'e9 ajoute un nouveau type de gomme : les "Supergommes". Celles-ci se distinguent des autres gommes par la variation de leurs effets.\
+\
+Tout d'abord, elles sont rouges afin de les diff\'e9rencier visuellement. Ensuite, lorsqu'elles sont mang\'e9es par Pac-Man, le score est augment\'e9 de 50 points et les r\'f4les sont invers\'e9s : en effet, Pac-Man devient chasseur et les fant\'f4mes deviennent les proies pendant 7 secondes lors des deux premi\'e8res "Supergommes" mang\'e9es et durant 5 secondes pour les deux derni\'e8res. Lorsque les fant\'f4mes sont les proies, ils sont bleus et fuient Pac-Man. Dans le cas o\'f9 Pac-Man arrive \'e0 manger un fant\'f4me, cela lui rapporte des points : 200 pour le premier, 400 pour le deuxi\'e8me, 800 pour le troisi\'e8me et 1600 pour le quatri\'e8me.\
+\
+\\subsection\{D\'e9marche suivie\}\
+Pour r\'e9aliser cette fonctionnalit\'e9, nous avons tout d'abord cr\'e9er une classe "SuperPellet" qui h\'e9rite de "Pellet". Nous l'avons ajout\'e9e \'e0 la "MapParser" pour que les "Supergommes" soient \'e9galement pr\'e9sentes sur la carte.\
+\
+Nous avons cr\'e9\'e9 une classe "VulnerableGhost" qui repr\'e9sente les fant\'f4mes pouvant \'eatre chass\'e9s quand une "Supergomme" est mang\'e9e. Les fant\'f4mes pr\'e9nomm\'e9s Blinky, Clyde, Inky et Pinky h\'e9ritent donc dor\'e9navant de "VulnerableGhost". Dans le m\'eame temps, une classe "VulnerableGhostFactory" a \'e9t\'e9 r\'e9alis\'e9e. Cette derni\'e8re h\'e9rite de la classe "GhostFactory" qui sert \'e0 instancier les fant\'f4mes et permet de respecter le Factory Design Pattern.\
+\
+Pour g\'e9rer l'alternance des modes, nous avons d\'e9velopp\'e9 un timer qu'il est possible de mettre en pause. De cette mani\'e8re, lorsque le jeu est en mode pause, le timer ne continue pas de s'ex\'e9cuter.\
+\
+Les collisions sont g\'e9r\'e9es dans "PlayerCollisionSuperPellet". Si Pac-Man mange une "Supergomme", le mode "chasseur" est d\'e9clench\'e9: les fant\'f4mes deviennent bleu et fuient Pac-Man. Pendant ce temps, un timer est lanc\'e9 pour qu'apr\'e8s 7 secondes (pour les deux premi\'e8res "Supergommes", 5 secondes pour les deux derni\'e8res) le jeu reprenne son cours habituel. Dans le cas o\'f9, Pac-Man mange un fant\'f4me durant le mode "chasseur", il gagne le score pr\'e9d\'e9termin\'e9 (voir Programme initial et objectifs).\
+\
+Enfin, nous avons cr\'e9\'e9 un launcher nomm\'e9 "LauncherSuperPellet" afin de d\'e9marrer le jeu accompagn\'e9 des param\'e8tres permettant que les "Supergommes" soient activ\'e9es.\
+\
+\\section\{S\'e9rie de labyrinthe - Ledru Santorin\}\
+\\subsection\{Programme initial et objectifs\}\
+A l'origine, Pac-Man mourrait et la partie s'achevait \'e0 partir du moment o\'f9 un fant\'f4me\
+rentrait en contact avec lui. La partie prenait fin \'e9galement lorsque\
+le joueur avait ramass\'e9 toutes les gommes du labyrinthe de base propos\'e9.\
+\
+Il nous a \'e9t\'e9 demand\'e9 de mettre en place la fonctionnalit\'e9 "S\'e9rie de labyrinthe". Elle se caract\'e9rise par plusieurs objectifs.\
+\
+Le premier objectif vise \'e0 donner \'e0 Pac-Man trois vies. Lorsqu'il\
+meurt, il est t\'e9l\'e9port\'e9 sur une case al\'e9atoire situ\'e9e \'e0 plus de quatre cases\
+du fant\'f4me le plus proche. Pac-Man doit \'e9galement gagner une vie tous\
+les dix milles points accumul\'e9s.\
+\
+Ensuite, un syst\'e8me de niveaux a \'e9t\'e9 r\'e9alis\'e9. Lorsqu'un\
+niveau est termin\'e9, la partie s'encha\'eene sur le niveau suivant. Pac-Man\
+conserve son nombre de vies et ses points lors du changement de niveau.\
+\
+Enfin, la progression du joueur doit pouvoir \'eatre sauvegard\'e9e pour\
+qu'il puisse reprendre sa partie au dernier niveau atteint.\
+\
+\\subsection\{D\'e9marche suivie\}\
+\\subsubsection\{Still alive!\}\
+Tout d'abord, une simple variable est ajout\'e9e dans la classe "Player"\
+dans le but de tenir le compte des vies restantes de Pac-Man. Le d\'e9compte des\
+vies se fait gr\'e2ce \'e0 la m\'e9thode "setAlive(boolean)" de la classe "Player".\
+La r\'e9surrection de Pac-Man est effectu\'e9e dans la m\'e9thode "levelLost()" de\
+la classe "SinglePlayerGame", un Observer \'e9tant d\'e9j\'e0 en place, nous nous en sommes servi. Dans cette m\'e9thode, lorsque le joueur poss\'e8de encore une vie,\
+une case al\'e9atoire du plateau de jeu est choisie \'e0 partir de la m\'e9thode "nearestValidRespawnPoint()". On d\'e9place Pac-Man sur la position de r\'e9surrection valide la plus proche.\
+\
+\\subsubsection\{Plusieurs niveaux\}\
+On g\'e8re d'abord le chargement de plusieurs niveaux. Les niveaux charg\'e9s\
+se r\'e9f\'e8rent \'e0 tous les fichiers nomm\'e9s "board\{*\}.txt" pr\'e9sents dans le dossier\
+"ressources" des fichiers du jeu. Ils sont toujours pr\'e9sent\'e9s au joueur\
+dans l'ordre alphab\'e9tique des noms des fichiers. Ils sont charg\'e9s dans\
+un tableau de "Levels". "SinglePlayerGame" a \'e9t\'e9 modifi\'e9 pour qu'il puisse\
+g\'e9rer plusieurs niveaux. Dor\'e9navant, il existe deux moyens de changer de niveau :\
+ d'une part, des boutons ont \'e9t\'e9 impl\'e9ment\'e9s afin de choisir son niveau d\'e8s le d\'e9but de la partie; d'autre part, l'unique autre mani\'e8re de changer de niveau est de gagner le niveau en cours de partie. A ce moment,\
+le changement de niveau ne se fait plus gr\'e2ce \'e0 l'"Observer" pr\'e9sent\
+dans la classe "SinglePlayerGame", mais dans la m\'e9thode "levelWon()". Nous pouvons voir \'e0 la \\hyperref[figure1]\{Figure 1\} les diff\'e9rents niveaux ajout\'e9s au jeu.\
+\
+\\begin\{figure\}[!h]\
+\\includegraphics[scale=0.42]\{ressources/block2\}\\includegraphics[scale=0.42]\{ressources/block3\}\\includegraphics[scale=0.42]\{ressources/block4\}\\caption\{Diff\'e9rents labyrinthes disponibles\}\\label\{figure1\}\
+\
+\
+\\end\{figure\}\
+\
+\
+\
+\\subsubsection\{Sauvegarde de progression\}\
+En d\'e9but de partie, le programme demande le nom de l'utilisateur.\
+Le logiciel permet de v\'e9rifier s'il existe d\'e9j\'e0 un fichier de sauvegarde associ\'e9\
+\'e0 l'utilisateur, sinon celui-ci est cr\'e9\'e9. A chaque niveau est associ\'e9 un\
+indice. Le plus grand indice des niveaux termin\'e9s par\
+le joueur est stock\'e9 dans le fichier de sauvegarde. Lors de la prochaine partie, si\
+l'utilisateur entre le m\'eame nom, il pourra choisir le niveau qu'il d\'e9sire dans le cas o\'f9 il l'a d\'e9ja d\'e9bloqu\'e9 gr\'e2ce aux boutons de changement de niveaux de l'interface.\
+\
+\
+Un Observer Design Pattern a \'e9t\'e9 impl\'e9ment\'e9 par le biais de l'interface\
+"GameObserver" afin de permettre de notifier le joueur par des pop-up. Ces notifications ont lieu lorsque certains \'e9v\'e9nements surviennent, tels que le fait de ne pas pouvoir d\'e9marrer un niveau (car le joueur ne l'a pas d\'e9bloqu\'e9), quand le joueur a termin\'e9 sa partie et que la progression est sauvegard\'e9e.\
+\
+\
+\\section\{IA pour fant\'f4mes - Gallois Florent\}\
+\\subsection\{Programme initial et objectifs\}\
+Actuellement, les comportements des quatres fant\'f4mes du jeu Pac-Man sont erratiques : \
+leur trajectoire est d\'e9termin\'e9e al\'e9atoirement.\
+\
+Nous avons cr\'e9\'e9 des IA pour les fant\'f4mes afin de leur donner des trajets plus int\'e9ressants pour le jeu.\
+Pour cela, l'objectif est d'affecter \'e0 chaque fant\'f4me deux modes : un mode de poursuite pendant lequel ils poursuivent PacMan (\'e0 leur mani\'e8re) et un mode de dispersion durant lequel ils suivent une trajectoire pr\'e9d\'e9finie.\
+\
+Le mode poursuite ayant d\'e9j\'e0 \'e9t\'e9 r\'e9alis\'e9 dans le logiciel, nous avons r\'e9alis\'e9 le mode dispersion.\
+Pour ce faire, chaque fant\'f4me doit r\'e9guli\'e8rement se rendre dans un coin : Pinky en haut \'e0 gauche, Blinky en haut \'e0 droite, Clyde en bas \'e0 gauche et enfin, Inky en bas \'e0 droite.\
+\
+Nous avons impl\'e9ment\'e9 ce mode par la r\'e9alisation d'un Strategy Design Pattern.\
+Ce changement de strat\'e9gie permet d'alterner entre la poursuite et la dispersion.\
+Ces variations se font selon les p\'e9riodes de temps indiqu\'e9es dans l'\'e9nonc\'e9 de base du projet : 7 secondes de dispersion, ensuite 20 secondes de poursuite, 7 secondes de dispersion,etc. \
+\
+\\subsection\{D\'e9marche suivie\}\
+La principale difficult\'e9 de cette r\'e9alisation est d'arriver \'e0 construire \'e9l\'e9gamment les IA des fant\'f4mes de telle sorte qu'un ajout de strat\'e9gie reste accessible.\
+Comme il nous l'a \'e9t\'e9 sugg\'e9r\'e9, nous nous sommes int\'e9r\'e9ss\'e9s au Strategy Design Pattern.\
+\
+\\begin\{figure\}[!h] %on ouvre l'environnement figure\
+		\\centering\
+		\\includegraphics[scale=0.7]\{ressources/StrategyDesignPattern.png\}\
+		\\caption\{Strategy Design Pattern\}\\label\{figure2\}\
+\\end\{figure\} \
+\
+\
+\
+Ce pattern est tr\'e8s utile lorsqu'il est n\'e9cessaire de permuter dynamiquement des algorithmes ou, par exemple, lorsque des classes ne diff\'e8rent que par leur comportement. Ainsi, pour \'e9viter de dupliquer le code, une seule classe est cr\'e9\'e9e. Celle-ci comprend alors les \'e9l\'e9ments de base. D'autre part, une interface est impl\'e9ment\'e9e par diverses classes d\'e9crivant les diff\'e9rents comportements de la classe centrale.\
+\
+De prime abord, nous avions pens\'e9 cr\'e9er pour chacun des fant\'f4mes, une interface impl\'e9ment\'e9e par deux classes : une classe poursuite et une classe de dispersion.\
+Or cela engendrait toujours un code dupliqu\'e9, les algorithmes de dispersion \'e9tant tous les m\'eames.\
+\
+Pour la premi\'e8re version du logiciel, un pattern comme celui qui suit a \'e9t\'e9 cr\'e9e :\
+\
+\\begin\{figure\}[!h] %on ouvre l'environnement figure\
+		\\centering\
+		\\includegraphics[scale=0.9]\{ressources/StrategyDP.png\}\
+		\\caption\{Design pattern strategy appliqu\'e9\}\\label\{figure3\}\
+\\end\{figure\}\
+\\newpage\
+\
+Les quatre classes associ\'e9es au mode poursuite pour chaque fant\'f4me ont \'e9t\'e9 cr\'e9\'e9es. La m\'e9thode de poursuite a \'e9t\'e9 copi\'e9-coll\'e9 dans celles-ci. Ces quatre classes h\'e9ritent de la classe abstraite "PoursuiteMode".\
+Quatre autres classes ont donc vues le jour, repr\'e9sentant le mode dispersion de chaque fant\'f4me.\
+Ces quatre classes h\'e9ritent de la classe abstraite "DispersionMode".\
+Enfin, "PoursuiteMode" et "DispersionMode" impl\'e9mente l'interface "Strategy".\
+\
+Pour la deuxi\'e8me version du logiciel, l'algorithme de dispersion a \'e9t\'e9 cr\'e9\'e9.\
+Afin de pouvoir l'ex\'e9cuter, des variables d'instance ont \'e9t\'e9 am\'e9nag\'e9es dans la classe "Ghost". Une variable "atteintHome" de type "String" indique si le fant\'f4me a atteint sa case maison (la case du coin). Un tableau de direction m\'e9morise le chemin qu'il devra emprunter apr\'e8s avoir visit\'e9 sa case maison. Un autre tableau de direction repr\'e9sente le chemin qu'il doit prendre \'e0 la prochaine occurrence et enfin, un "square" repr\'e9sente sa case maison.\
+Cet algorithme est plac\'e9 dans la classe "DispersionMode". Les classes filles font appel \'e0 cette m\'eame m\'e9thode.\
+\
+Dans la troisi\'e8me version du logiciel, nous avons mis en place la variable "strategy" nous permettant d'alterner entre la dispersion et la poursuite.\
+De cette mani\'e8re, une variable de type "String" est plac\'e9e dans la classe "NPC" qui repr\'e9sente la strat\'e9gie en cours : "ModeDispersion" ou "ModePoursuite". Lorsque la strat\'e9gie change au cours du temps, cette variable est modifi\'e9e gr\'e2ce \'e0 "setStrategy".\
+Par exemple, la m\'e9thode "nextMove()" de Blinky appelle directement la m\'e9thode de sa classe de dispersion ou de sa classe de poursuite associ\'e9es en fonction de la valeur de cette variable.\
+Par cons\'e9quent, si l'on souhaite modifier la strat\'e9gie d'un fant\'f4me, nous n'avons plus \'e0 changer le code dans toutes les classes fant\'f4mes mais \'e0 rectifier les appels aux m\'e9thodes.\
+\
+Enfin, pour la quatri\'e8me et derni\'e8re version du logiciel, nous avons indiqu\'e9 au programme de permuter entre les deux strat\'e9gies en fonction du temps.\
+Dans la classe "NpcMoveTask", une variable "temps" est cr\'e9\'e9 pour suivre l'\'e9coulement du temps. Celle-ci est incr\'e9ment\'e9e \'e0 chaque occurrence de la fonction "run" selon la moyenne d'intervalle entre deux coups d'un fant\'f4me. \
+Dans la fonction "run", suivant la valeur de cette variable, nous appelons la m\'e9thode "setStrategy" de la classe "NPC" afin de modifier la strat\'e9gie des fant\'f4mes.\
+\
+\\section\{Difficult\'e9s li\'e9es \'e0 la fusion\}\
+Concernant la fusion entre la fonctionnalit\'e9 "Supergomme" et la fonctionnalit\'e9 "S\'e9rie de labyrinthe", nous n'avons eu aucun conflit et le jeu \'e9tait en parfait \'e9tat de marche lorsque les deux fonctionnalit\'e9s s'ex\'e9cutaient en m\'eame temps.\
+\
+Concernant la fusion avec la troisi\'e8me fonctionnalit\'e9, quelques conflits se sont pr\'e9sent\'e9s, notamment dans les classes "MapParser" ainsi que dans les classes des fant\'f4mes (Blinky, Clyde, Inky et Pinky). N\'e9anmoins cela s'est assez vite r\'e9gl\'e9 car nos codes \'e9taient tout de m\'eame compatibles.\
+\
+Pour lancer la version finale contenant les trois fonctionnalit\'e9s, il suffit de d\'e9marrer la classe "LaunchSuperPellet".\
+\
+\\section\{Analyse de la qualit\'e9 du code\}\
+\\subsection\{Outils utilis\'e9s\}\
+\\subsubsection\{Google CodePro AnalitiX\}\
+Le premier outil utilis\'e9 est Google CodePro AnalitiX sous sa forme\
+plugin Eclipse.\
+\
+Il s'agit d'un outil tr\'e8s complet qui permet le calcul des m\'e9triques,\
+la d\'e9tection de code dupliqu\'e9, l'analyse des d\'e9pendances et la couverture\
+du code et des tests. Dans cette situation, nous l'utilisons pour le calcul des m\'e9triques,\
+la d\'e9tection de code dupliqu\'e9 et l'analyse des d\'e9pendances.\
+\
+\\subsubsection\{EclEmma\}\
+Le second outil est Emma sous sa forme plugin Eclipse (EclEmma).\
+\
+Emma est un outil utilis\'e9 pour v\'e9rifier la couverture du code ainsi\
+que les tests lors de l'ex\'e9cution de ces derniers.\
+\
+\\subsubsection\{CodeCity\}\
+Le troisi\'e8me outil est CodeCity.\
+\
+CodeCity est un outil qui permet de visualiser les m\'e9triques sous\
+forme graphique. Nous l'avons utilis\'e9 pour constater les diff\'e9rences\
+entre le projet de base et le projet modifi\'e9.\
+\
+\\subsubsection\{PMD\}\
+Le dernier outil utilis\'e9 est PMD sous sa forme plugin Eclipse.\
+\
+PMD est un logiciel permettant de d\'e9tecter les mauvaises pratiques\
+de programmation ("Bad Smells"). Nous avons observ\'e9 la variation\
+de l'apparition de ces "Bad Smells" lors de la modification du\
+projet.\
+\
+\\subsection\{Analyse des d\'e9pendances\}\
+\\subsubsection\{Projet de base\}\
+\
+La \\hyperref[figure4]\{Figure 4\} est un graphe des d\'e9pendances entre les packages\
+du projet de base. Il est possible de constat\'e9 sur celui-ci beaucoup de\
+d\'e9pendances cycliques ainsi que certaines classes ayant une forte interd\'e9pendance (exemple: "ghost" et "level").\
+\
+\
+\\begin\{figure\}[!h]\
+\\begin\{center\}\\includegraphics[scale=0.5]\{ressources/final_initial_dependencies\}\\end\{center\}\
+\\caption\{D\'e9pendances du projet de base\}\\label\{figure4\}\
+\\end\{figure\}\
+\
+\\subsubsection\{Projet modifi\'e9\}\
+\
+Un graphe des d\'e9pendances est repr\'e9sent\'e9 \'e0 la \\hyperref[figure5]\{Figure 5\}. Celle-ci permet de constater qu'en g\'e9n\'e9ral les d\'e9pendances ont augment\'e9 et que nous avons aussi\
+ajout\'e9 des interd\'e9pendances entre deux packages qui n'en poss\'e9daient\
+pas.\
+\
+\\begin\{figure\}[!h]\
+\\begin\{center\}\\includegraphics[scale=0.5]\{ressources/final_new_dependencies\}\\end\{center\}\\caption\{D\'e9pendances du projet modifi\'e9\}\\label\{figure5\}\
+\
+\
+\\end\{figure\}\
+\
+\\subsection\{Code dupliqu\'e9\}\
+Selon Google CodePro AnalitiX, il y a 54 lignes de code dupliqu\'e9es\
+dans le projet de base. Cette valeur est assez basse et d\'e9montre la\
+volont\'e9 des d\'e9veloppeurs du projet d'\'e9viter la programmation "copi\'e9e-coll\'e9e"\
+\
+Suite \'e0 nos modifications, Google CodePro AnalitiX, pointe toujours 54 lignes de code dupliqu\'e9es,\
+nous n'avons donc pas alt\'e9r\'e9 ce point pr\'e9cis du code lors de nos modifications.\
+\
+\
+\\subsection\{Test \\& Code Coverage\}\
+\\subsubsection\{Projet de base\}\
+EclEmma nous donne comme valeurs:\
+\\begin\{itemize\}\
+\\item Test coverage : 80.9\\%.\
+\\item Code coverage (ex\'e9cution sans jouer) : 41\\%.\
+\\item Code coverage (ex\'e9cution partie type): $\\sim$60\\%.\
+\\end\{itemize\}\
+\
+\\subsubsection\{Projet modifi\'e9\}\
+EclEmma nous donne comme valeurs:\
+\\begin\{itemize\}\
+\\item Test coverage : 71\\%.\
+\\item Code coverage (ex\'e9cution sans jouer) : 35.9\\%.\
+\\item Code coverage (ex\'e9cution partie type): $\\sim$60\\%.\
+\\end\{itemize\}\
+Nous constatons que de mani\'e8re g\'e9n\'e9rale le coverage a diminu\'e9, principalement\
+au niveau du test coverage. Bien qu'un paradigme de programmation\
+d\'e9fensive a \'e9t\'e9 utilis\'e9, nous n'avons pas r\'e9ussi \'e0 trouver de tests\
+qui couvrent l'enti\'e8ret\'e9 du code ajout\'e9.\
+\
+\\subsection\{M\'e9triques\}\
+\\subsubsection\{Tableaux de m\'e9triques\}\
+\
+La \\hyperref[figure6]\{Figure 6\} pr\'e9sente les deux tableaux de m\'e9triques parall\'e8lement l'un \'e0 l'autre, ce\
+qui permet de comparer facilement les r\'e9sultats.\
+\
+Il est possible de noter, entre autres, une l\'e9g\'e8re augmentation de la complexit\'e9\
+cyclomatique, un accroissement g\'e9n\'e9ral de la taille des diff\'e9rentes\
+classes (nombre de m\'e9thodes et nombre de lignes) et une l\'e9g\'e8re diminution\
+du ratio des commentaires.\
+\
+\\begin\{figure\}[!h]\
+\\includegraphics[scale=0.45]\{ressources/final_initial_metrics\}\\includegraphics[scale=0.45]\{ressources/final_new_metrics\}\\caption\{Comparaison des tableaux de m\'e9triques (initial \'e0 gauche)\}\\label\{figure6\}\
+\
+\
+\\end\{figure\}\
+\
+\\subsubsection\{CodeCity : m\'e9thodes par classes\}\
+Codecity nous a permis de repr\'e9senter graphiquement certaines m\'e9triques\
+par classes sur l'ensemble du projet.\
+\
+Dans ce cas, nous nous int\'e9ressons au nombre de m\'e9thodes par classe. Nous constatons que de mani\'e8re g\'e9n\'e9rale, celui augmente pour l'ensemble du projet(voir \\hyperref[figure7]\{Figure 7\}).\
+\
+\\begin\{figure\}[!h]\
+\\includegraphics[scale=0.5]\{ressources/final_initial_declared_methods\}\\includegraphics[scale=0.5]\{ressources/final_new_declared_methods\}\\caption\{Comparaison du nombre de m\'e9thodes par classe (initial \'e0 gauche)\}\\label\{figure7\}\
+\
+\
+\\end\{figure\}\
+\
+\\subsubsection\{CodeCity : complexit\'e9 cyclomatique\}\
+La \\hyperref[figure8]\{Figure 8\} d\'e9montre que la complexit\'e9 cyclomatique reste sensiblement\
+\
+On voit sur la  que la complexit\'e9 cyclomatique reste sensiblement\
+la m\'eame.\
+\
+\\begin\{figure\}[!h]\
+\\includegraphics[scale=0.5]\{ressources/final_initial_cyclomatic\}\\includegraphics[scale=0.5]\{ressources/final_new_cyclomatic\}\\caption\{Comparaison de la complexit\'e9 cyclomatique par classe (initial \'e0 gauche)\}\\label\{figure8\}\
+\
+\
+\\end\{figure\}\
+\
+\\subsubsection\{CodeCity : nombre de lignes de code\}\
+\
+Sur la \\hyperref[figure9]\{Figure 9\}, le nombre de lignes de code par\
+classe est rest\'e9 sensiblement identique, except\'e9 pour deux d'entre elles\
+("Launcher" et "Level") qui m\'e9riteraient d'\'eatre s\'e9par\'e9es en plus petites\
+classes pour \'e9viter le ph\'e9nom\'e8ne de "God Class".\
+\
+\\begin\{figure\}[!h]\
+\\includegraphics[scale=0.5]\{ressources/final_initial_lines_of_code\}\\includegraphics[scale=0.5]\{ressources/final_new_lines_of_code\}\\caption\{Comparaison du nombre de lignes de code par classe (initial \'e0 gauche)\}\\label\{figure9\}\
+\
+\
+\\end\{figure\}\
+\
+\\subsection\{Bad Smells\}\
+PMD a mis en \'e9vidence 827 violations des bonnes pratiques de programmation\
+dans le projet initial. En ce qui concerne le projet final, les violation montent \'e0 1442. Les erreurs les plus fr\'e9quentes sont "variable\
+or argument could be final" (39.6\\% des violations pour le projet\
+initial contre 33\\% pour le projet modifi\'e9), "law of demeter"\
+(10\\% pour le projet initial contre 12\\% pour le projet modifi\'e9) et\
+"short variable" (10\\% pour le projet initial contre 11\\% pour\
+le projet modifi\'e9).\
+\
+Nous avons donc un accroisement de 74\\% de violations selon PMD, \'e0 savoir\
+que le code est pass\'e9 de 2415 \'e0 3825 lignes de code, c'est \'e0 dire\
+un accroissement de 58\\% en ce qui concerne la taille du projet en terme de nombre\
+lignes de codes (lignes de code effectives selon Google CodePro AnalitiX).\
+Notons \'e9galement que PMD nous donne deux avertissements pour "God Class"\
+concernant les classes "Level" et "Launcher". Ces deux classes ont subi une grande croissance lors nos\
+modifications respectives. Il semble qu'un refactoring soit n\'e9cessaire\
+\'e0 ce niveau pour pouvoir poursuivre la maintenance logicielle.\
+\
+\\section\{Conclusion\}\
+Le projet nous a permis de nous rendre compte de l'importance de bien penser un logiciel \'e0 chaque \'e9tape de sa confection, des difficult\'e9s \'e0 le maintenir et \'e0 le faire \'e9voluer. En effet, ce travail nous a donn\'e9 l'occasion d'accroitre nos capacit\'e9s relatives \'e0 la programmation, l'organisation, la gestion du temps, la structure, la communication, la coh\'e9rence et le travail d'\'e9quipe.\
+\\end\{document\}}
