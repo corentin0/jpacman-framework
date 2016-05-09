@@ -9,7 +9,8 @@
 \usepackage{color}
 \usepackage{graphicx} %affichage d'image
 \usepackage{moreverb}
-\usepackage[colorlinks=true,linkcolor=black]{hyperref} %lien hypertexte
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref} %lien hypertexte
+\usepackage[all]{hypcap}
 \usepackage{fullpage}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -111,7 +112,14 @@ un tableau de "Levels". "SinglePlayerGame" a été modifié pour qu'il puisse
 gérer plusieurs niveaux. Dorénavant, il existe deux moyens de changer de niveau :
  d'une part, des boutons ont été implémentés afin de choisir son niveau dès le début de la partie; d'autre part, l'unique autre manière de changer de niveau est de gagné le niveau en cours de partie. A ce moment,
 le changement de niveau se fait toujours grâce à l'"Observer" présent
-dans la classe "SinglePlayerGame", mais cette fois dans la méthode "levelWon()".
+dans la classe "SinglePlayerGame", mais cette fois dans la méthode "levelWon()". Nous pouvons voir à la \hyperref[figure1]{Figure 1} les différents niveaux ajoutés au jeu.
+
+\begin{figure}[!h]
+\includegraphics[scale=0.42]{ressources/block2}\includegraphics[scale=0.42]{ressources/block3}\includegraphics[scale=0.42]{ressources/block4}\caption{Différents labyrinthes disponibles}\label{figure1}
+
+
+\end{figure}
+
 
 
 \subsubsection{Sauvegarde de progression}
@@ -150,7 +158,7 @@ Comme il nous l'a été suggéré, nous nous sommes intéréssés au Strategy De
 \begin{figure}[!h] %on ouvre l'environnement figure
 		\centering
 		\includegraphics[scale=0.7]{ressources/StrategyDesignPattern.png}
-		\caption{Strategy Design Pattern}
+		\caption{Strategy Design Pattern}\label{figure2}
 \end{figure} 
 
 
@@ -165,7 +173,7 @@ Pour la première version du logiciel, un pattern comme celui qui suit a été c
 \begin{figure}[!h] %on ouvre l'environnement figure
 		\centering
 		\includegraphics[scale=0.9]{ressources/StrategyDP.png}
-		\caption{Design pattern strategy appliqué}
+		\caption{Design pattern strategy appliqué}\label{figure3}
 \end{figure}
 \newpage
 
@@ -228,22 +236,25 @@ projet.
 
 \subsection{Analyse des dépendances}
 \subsubsection{Projet de base}
-La Figure 1 est un graphe des dépendances entre les packages
+
+La \hyperref[figure4]{Figure 4} est un graphe des dépendances entre les packages
 du projet de base. Il est possible de constaté sur celui-ci beaucoup de
 dépendances cycliques ainsi que certaines classes ayant une forte interdépendance (exemple: "ghost" et "level").
 
+
 \begin{figure}[!h]
 \begin{center}\includegraphics[scale=0.5]{ressources/final_initial_dependencies}\end{center}
-\caption{Dépendances du projet de base}
+\caption{Dépendances du projet de base}\label{figure4}
 \end{figure}
 
 \subsubsection{Projet modifié}
-Un graphe des dépendances est représenté à la Figure 2. Celle-ci permet de constater qu'en général les dépendances ont augmenté et que nous avons aussi
+
+Un graphe des dépendances est représenté à la \hyperref[figure5]{Figure 5}. Celle-ci permet de constater qu'en général les dépendances ont augmenté et que nous avons aussi
 ajouté des interdépendance entre deux packages qui n'en possédaient
 pas.
 
 \begin{figure}[!h]
-\begin{center}\includegraphics[scale=0.5]{ressources/final_new_dependencies}\end{center}\caption{Dépendances du projet modifié}
+\begin{center}\includegraphics[scale=0.5]{ressources/final_new_dependencies}\end{center}\caption{Dépendances du projet modifié}\label{figure5}
 
 
 \end{figure}
@@ -280,7 +291,8 @@ qui couvrent l'entièreté du code ajouté.
 
 \subsection{Métriques}
 \subsubsection{Tableaux de métriques}
-La Figure 3 présente les deux tableaux de métriques parallèlement l'un à l'autre, ce
+
+La \hyperref[figure6]{Figure 6} présente les deux tableaux de métriques parallèlement l'un à l'autre, ce
 qui permet de comparer facilement les résultats.
 
 Il est possible de noter, entre autres, une légère augmentation de la complexité
@@ -289,7 +301,7 @@ classes (nombre de méthodes et nombre de lignes) et une légère diminution
 du ratio des commentaires.
 
 \begin{figure}[!h]
-\includegraphics[scale=0.45]{ressources/final_initial_metrics}\includegraphics[scale=0.45]{ressources/final_new_metrics}\caption{Comparaison des tableaux de métriques (initial à gauche)}
+\includegraphics[scale=0.45]{ressources/final_initial_metrics}\includegraphics[scale=0.45]{ressources/final_new_metrics}\caption{Comparaison des tableaux de métriques (initial à gauche)}\label{figure6}
 
 
 \end{figure}
@@ -298,32 +310,35 @@ du ratio des commentaires.
 Codecity nous a permis de représenter graphiquement certaines métriques
 par classes sur l'ensemble du projet.
 
-Dans ce cas, nous nous intéressons au nombre de méthodes par classe. Nous constatons que de manière générale, celui augmente pour l'ensemble du projet.
+Dans ce cas, nous nous intéressons au nombre de méthodes par classe. Nous constatons que de manière générale, celui augmente pour l'ensemble du projet(voir \hyperref[figure7]{Figure 7}).
 
 \begin{figure}[!h]
-\includegraphics[scale=0.5]{ressources/final_initial_declared_methods}\includegraphics[scale=0.5]{ressources/final_new_declared_methods}\caption{Comparaison du nombre de méthodes par classe (initial à gauche)}
+\includegraphics[scale=0.5]{ressources/final_initial_declared_methods}\includegraphics[scale=0.5]{ressources/final_new_declared_methods}\caption{Comparaison du nombre de méthodes par classe (initial à gauche)}\label{figure7}
 
 
 \end{figure}
 
 \subsubsection{CodeCity : complexité cyclomatique}
-La Figure 5 démontre que la complexité cyclomatique reste sensiblement
+La \hyperref[figure8]{Figure 8} démontre que la complexité cyclomatique reste sensiblement
+
+On voit sur la  que la complexité cyclomatique reste sensiblement
 la même.
 
 \begin{figure}[!h]
-\includegraphics[scale=0.5]{ressources/final_initial_cyclomatic}\includegraphics[scale=0.5]{ressources/final_new_cyclomatic}\caption{Comparaison de la complexité cyclomatique par classe (initial à gauche)}
+\includegraphics[scale=0.5]{ressources/final_initial_cyclomatic}\includegraphics[scale=0.5]{ressources/final_new_cyclomatic}\caption{Comparaison de la complexité cyclomatique par classe (initial à gauche)}\label{figure8}
 
 
 \end{figure}
 
 \subsubsection{CodeCity : nombre de lignes de code}
-Sur la Figure 6, le nombre de lignes de code par
+
+Sur la \hyperref[figure9]{Figure 9}, le nombre de lignes de code par
 classe est resté sensiblement identique, excepté pour deux d'entre elles
 ("Launcher" et "Level") qui mériteraient d'être séparées en plus petites
 classes pour éviter le phénomène de "God Class".
 
 \begin{figure}[!h]
-\includegraphics[scale=0.5]{ressources/final_initial_lines_of_code}\includegraphics[scale=0.5]{ressources/final_new_lines_of_code}\caption{Comparaison du nombre de lignes de code par classe (initial à gauche)}
+\includegraphics[scale=0.5]{ressources/final_initial_lines_of_code}\includegraphics[scale=0.5]{ressources/final_new_lines_of_code}\caption{Comparaison du nombre de lignes de code par classe (initial à gauche)}\label{figure9}
 
 
 \end{figure}
